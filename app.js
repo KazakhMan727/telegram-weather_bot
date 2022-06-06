@@ -19,7 +19,12 @@ bot.on('message', async (msg) => {
       }
     };
 
-    const response = await axios.request(options);
-    bot.sendMessage(chatId, `В ${response.data.name} ${response.data.main.temp} градусов Цельсия`);
-    console.log(response.data);
+    axios.request(options).then(function (response) {
+      bot.sendMessage(chatId, `В ${response.data.name} ${response.data.main.temp} градусов °C, а ощущается как ${response.data.main.feels_like} °C \n
+      Также, скорость ветра в ${response.data.name} равняется ${response.data.wind.speed}, а давление ${response.data.main.pressure}
+      `);
+      console.log(response.data);
+    }).catch(function (error) {
+      console.error(error);
+    });
   });
